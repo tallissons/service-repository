@@ -15,4 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [PostController::class, 'index']);
+Route::get('/find/{id}', [PostController::class, 'find']);
 Route::get('/store', [PostController::class, 'store']);

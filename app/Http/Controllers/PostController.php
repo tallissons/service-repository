@@ -2,16 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Repositories\Contracts\PostRepositoryInterface;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    protected $repository;
+
+    public function __construct(PostRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function index()
     {
-        $posts = Post::all();
+        $posts = $this->repository->all();
 
         return $posts;
+    }
+
+    public function find($id)
+    {
+        $post = $this->repository->findOrFail($id);
+
+        return $post;
     }
 
     public function store(Request $request)
@@ -22,7 +36,7 @@ class PostController extends Controller
             'content' => 'Data: '.date('d/m/Y').' | Hora: '.date('h:i:s'),
         ];
 
-        $post = Post::create($data);
+        $post = $this->repository->create($data);
 
         return $post;
     }
